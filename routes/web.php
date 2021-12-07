@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ScheduleSettingsController;
+use App\Models\Schedule_settings;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+Route::get('/configuracoes', function () {
+    
+})->middleware(['auth'])->name('configuracoes');
+
+//Rotas de Configurações
+Route::get('/configuracoes', [ScheduleSettingsController::class, 'create'])->middleware('auth')->name('configuracoes');
+
+Route::post('/configuracoes', [ScheduleSettingsController::class, 'store'])->middleware('auth')->name('configuracoes');                
+
+require __DIR__.'/auth.php';
