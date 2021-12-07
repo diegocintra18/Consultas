@@ -94,31 +94,31 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="schedule_sunday">
+                            <input type="checkbox" class="form-check-input" id="schedule_sunday" name="schedule_sunday">
                             <label class="form-check-label" for="exampleCheck1">Domingo</label>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="schedule_monday" checked>
+                            <input type="checkbox" class="form-check-input" id="schedule_monday" name="schedule_monday" checked>
                             <label class="form-check-label" for="exampleCheck1">Segunda-feira</label>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="schedule_tuesday" checked>
+                            <input type="checkbox" class="form-check-input" id="schedule_tuesday" name="schedule_tuesday" checked>
                             <label class="form-check-label" for="exampleCheck1">Terça-feira</label>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="schedule_wednesday" checked> 
+                            <input type="checkbox" class="form-check-input" id="schedule_wednesday" name="schedule_wednesday" checked> 
                             <label class="form-check-label" for="exampleCheck1">Quarta-feira</label>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="schedule_thursday" checked>
+                            <input type="checkbox" class="form-check-input" id="schedule_thursday" name="schedule_thursday" checked>
                             <label class="form-check-label" for="exampleCheck1">Quinta-feira</label>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="schedule_friday" checked>
+                            <input type="checkbox" class="form-check-input" id="schedule_friday" name="schedule_friday" checked>
                             <label class="form-check-label" for="exampleCheck1">Sexta-feira</label>
                         </div>
                         <div class="form-group form-check">
-                            <input type="checkbox" class="form-check-input" id="schedule_saturday">
+                            <input type="checkbox" class="form-check-input" name="schedule_saturday" id="schedule_saturday">
                             <label class="form-check-label" for="exampleCheck1">Sábado</label>
                         </div>
                     </div>

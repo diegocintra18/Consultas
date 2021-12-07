@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\storeUpdateSettings;
 use App\Models\Schedule_settings;
 use Illuminate\Http\Request;
+use Psy\VarDumper\Dumper;
 
 class ScheduleSettingsController extends Controller
 {
@@ -53,6 +54,8 @@ class ScheduleSettingsController extends Controller
         }
 
         $data = $request->all();
+
+        
 
         return redirect()->back()->with('success', "As configurações foram salvas com sucesso!");
        

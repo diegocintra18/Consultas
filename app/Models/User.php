@@ -41,4 +41,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function schedule_settings() {
+        return $this->belongsTo(Schedule_settings::class);
+    }
 }
