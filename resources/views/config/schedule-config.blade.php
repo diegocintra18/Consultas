@@ -79,11 +79,11 @@
                         </div>
                         <div class="form-group">
                             <span>Intervalo antes de uma consulta (em minutos)</span>
-                            <input type="number" class="form-control" value="0" id="schdule_before_break" name="schdule_before_break">
+                            <input type="number" class="form-control" value="0" id="schdule_before_break" name="schedule_before_break">
                         </div>
                         <div class="form-group">
                             <span>Intervalo após uma consulta (em minutos)</span>
-                            <input type="number" class="form-control"value="0" id="schdule_after_break" name="schdule_after_break">
+                            <input type="number" class="form-control"value="0" id="schdule_after_break" name="schedule_after_break">
                         </div>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                             <label class="form-check-label" for="exampleCheck1">Sábado</label>
                         </div>
                     </div>
-                    <input type="hidden" name="idUser" value="{{Auth::user()->id}}">
+                    <input type="hidden" name="users_id" value="{{Auth::user()->id}}">
                 </div>
                 <button type="submit" class="btn btn-success">Salvar</button>
             </form>

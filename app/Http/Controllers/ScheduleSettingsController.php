@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\storeUpdateSettings;
+use App\Models\Schedule_disponibility;
 use App\Models\Schedule_settings;
 use Illuminate\Http\Request;
 use Psy\VarDumper\Dumper;
+use ScheduleDisponibility;
 
 class ScheduleSettingsController extends Controller
 {
@@ -55,7 +57,33 @@ class ScheduleSettingsController extends Controller
 
         $data = $request->all();
 
-        
+        $days = $this->daysOfWeek($data);
+
+        $createSettings = Schedule_settings::updateOrCreate([
+            'schedule_id'             => (integer) $data["users_id"],
+            'schedule_duration_limit' => (integer) $data["schedule_duration_limit"],
+            'schedule_before_break'   => (integer) $data["schedule_before_break"],
+            'schedule_after_break'    => (integer) $data["schedule_after_break"],
+            'schedule_day_start'      => $data["schedule_day_start"],
+            'schedule_lunch_start'    => $data["schedule_lunch_start"],
+            'schedule_lunch_end'      => $data["schedule_lunch_end"],
+            'schedule_day_end'        => $data["schedule_day_end"],
+            'user_id'                => (integer) $data["users_id"]
+        ]);
+
+        $idSettings = json_decode($createSettings, TRUE);
+
+        Schedule_disponibility::updateOrCreate([
+            'schedule_disponibility_id' => $idSettings["id"],
+            'schedule_sunday'           => $days["sunday"],
+            'schedule_monday'           => $days["monday"],
+            'schedule_tuesday'          => $days["tuesday"],
+            'schedule_wednesday'        => $days["wednesday"],
+            'schedule_thursday'         => $days["thursday"],
+            'schedule_friday'           => $days["friday"],
+            'schedule_saturday'         => $days["saturday"],
+            'schedule_settings_id'      => $idSettings["id"]
+        ]);
 
         return redirect()->back()->with('success', "As configurações foram salvas com sucesso!");
        
@@ -104,6 +132,58 @@ class ScheduleSettingsController extends Controller
     public function destroy(Schedule_settings $schedule_settings)
     {
         //
+    }
+
+    function daysOfWeek($data){
+
+        /*Esta função recebe o array de preenchimento do formulário, e verifica quais dias da semana foram
+        preenchidos para popular um array
+        */
+
+        if( array_key_exists("schedule_sunday", $data) ){
+            $days["sunday"] = 1;
+        } else {
+            $days["sunday"] = 0;
+        }
+
+        if( array_key_exists("schedule_monday", $data) ){
+            $days["monday"] = 1;
+        } else {
+            $days["monday"] = 0;
+        }
+
+        if( array_key_exists("schedule_tuesday", $data) ){
+            $days["tuesday"] = 1;
+        } else {
+            $days["tuesday"] = 0;
+        }
+
+        if( array_key_exists("schedule_wednesday", $data) ){
+            $days["wednesday"] = 1;
+        } else {
+            $days["wednesday"] = 0;
+        }
+
+        if( array_key_exists("schedule_thursday", $data) ){
+            $days["thursday"] = 1;
+        } else {
+            $days["thursday"] = 0;
+        }
+
+        if( array_key_exists("schedule_friday", $data) ){
+            $days["friday"] = 1;
+        } else {
+            $days["friday"] = 0;
+        }
+
+        if( array_key_exists("schedule_saturday", $data) ){
+            $days["saturday"] = 1;
+        } else {
+            $days["saturday"] = 0;
+        }
+
+        return $days;
+        
     }
 
 }

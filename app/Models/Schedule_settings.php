@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use ScheduleDisponibility;
 
 class Schedule_settings extends Model
 {
@@ -19,10 +20,14 @@ class Schedule_settings extends Model
         'schedule_lunch_start',
         'schedule_lunch_end',
         'schedule_day_end',
-        'users_id',
+        'user_id',
     ];
 
     public function users() {
         return $this->hasMany(User::class);
+    }
+
+    public function schedule_settings() {
+        return $this->hasMany(ScheduleDisponibility::class);
     }
 }

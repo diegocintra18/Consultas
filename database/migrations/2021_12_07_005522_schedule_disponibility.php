@@ -14,7 +14,7 @@ class ScheduleDisponibility extends Migration
     public function up()
     {
         Schema::create('schedule_disponibility', function (Blueprint $table) {
-            $table->bigIncrements('schedule_disponibility_id');
+            $table->id('schedule_disponibility_id');
             $table->integer('schedule_sunday');
             $table->integer('schedule_monday');
             $table->integer('schedule_tuesday');
