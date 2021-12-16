@@ -32,7 +32,7 @@
             </div>
         </div>
     @endif
-    <div class="container bg-white p-3">
+    <div class="container-fluid bg-white p-3">
         <div class="col-6">
             <form method="POST" action="{{ route('configuracoes') }}">
                 @csrf

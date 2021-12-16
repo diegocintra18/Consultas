@@ -9,7 +9,7 @@
         </div>
         <div class="col">
             <div class="float-right">
-                <a href="">
+                <a href="/cadastro-configuracoes">
                     <button type="button" class="btn btn-success">Adicionar regras de agendamento</button>
                 </a>
             </div>

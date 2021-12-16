@@ -17,3 +17,6 @@ sail artisan queue:work
 
 #Banco de Dados
 Na primeira execução do projeto será necessário executar um comando de terminal no container ativo do Laravel para as migrations criarem as tabelas do banco de dados, este comando é: sail artisan migrate
+
+
+Caso a aplicação acuse algum erro ao rodar as migrates, rode este comando para limpar as configurações do docker: ./vendor/bin/sail down --rmi all -v

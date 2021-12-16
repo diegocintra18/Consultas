@@ -19,16 +19,6 @@ class ScheduleSettingsController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
         // esta função verifica se existem regras de agendamento criadas, caso existam elas serão exibidas,
         // caso não, a rota será chamada para a construção da página em branco;
         $user = Auth::user()->id;
@@ -40,6 +30,16 @@ class ScheduleSettingsController extends Controller
         } else {
             return view('config/add-schedule-config');
         }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('config/schedule-config');
         
     }
 
