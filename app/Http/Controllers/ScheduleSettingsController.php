@@ -6,6 +6,7 @@ use App\Http\Requests\storeUpdateSettings;
 use App\Models\Schedule_disponibility;
 use App\Models\Schedule_settings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Psy\VarDumper\Dumper;
 use ScheduleDisponibility;
 
@@ -28,7 +29,18 @@ class ScheduleSettingsController extends Controller
      */
     public function create()
     {
-        return view('config/schedule-config');
+        // esta função verifica se existem regras de agendamento criadas, caso existam elas serão exibidas,
+        // caso não, a rota será chamada para a construção da página em branco;
+        $user = Auth::user()->id;
+        $data = Schedule_settings::where('user_id', $user)->get();
+
+        if ( !empty($data) ) {
+            $schedule_settings = json_decode($data, TRUE);
+            return view('config/add-schedule-config', compact('schedule_settings'));
+        } else {
+            return view('config/add-schedule-config');
+        }
+        
     }
 
     /**
