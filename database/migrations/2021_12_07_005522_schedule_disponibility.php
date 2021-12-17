@@ -14,7 +14,7 @@ class ScheduleDisponibility extends Migration
     public function up()
     {
         Schema::create('schedule_disponibility', function (Blueprint $table) {
-            $table->id('schedule_disponibility_id');
+            $table->id();
             $table->integer('schedule_sunday');
             $table->integer('schedule_monday');
             $table->integer('schedule_tuesday');
@@ -22,7 +22,7 @@ class ScheduleDisponibility extends Migration
             $table->integer('schedule_thursday');
             $table->integer('schedule_friday');
             $table->integer('schedule_saturday');
-            $table->foreignId('schedule_settings_id');
+            $table->foreignId('schedule_settings_id')->constrained('schedule_settings');
             $table->timestamps();
         });
     }

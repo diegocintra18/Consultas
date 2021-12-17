@@ -27,7 +27,7 @@ class Schedule_settings extends Model
         return $this->hasMany(User::class);
     }
 
-    public function schedule_settings() {
-        return $this->hasMany(ScheduleDisponibility::class);
+    public function schedule_disponibility() {
+        return $this->hasMany(Schedule_disponibility::class);
     }
 }

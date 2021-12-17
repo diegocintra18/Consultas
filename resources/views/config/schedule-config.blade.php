@@ -34,7 +34,7 @@
     @endif
     <div class="container-fluid bg-white p-3">
         <div class="col-6">
-            <form method="POST" action="{{ route('configuracoes') }}">
+            <form method="POST" action="{{ route('schedule.store') }}">
                 @csrf
                 <div class="card">
                     <div class="card-header bg-info">

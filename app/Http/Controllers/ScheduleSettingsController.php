@@ -22,9 +22,27 @@ class ScheduleSettingsController extends Controller
         // esta função verifica se existem regras de agendamento criadas, caso existam elas serão exibidas,
         // caso não, a rota será chamada para a construção da página em branco;
         $user = Auth::user()->id;
-        $data = Schedule_settings::where('user_id', $user)->get();
 
-        if ( !empty($data) ) {
+        $data = Schedule_settings::select(
+            "schedule_settings.id",
+            "schedule_settings.schedule_day_start",
+            "schedule_settings.schedule_day_start",
+            "schedule_settings.schedule_lunch_start",
+            "schedule_settings.schedule_lunch_end",
+            "schedule_settings.schedule_day_end",
+            "schedule_settings.schedule_duration_limit",
+            "schedule_disponibility.schedule_sunday",
+            "schedule_disponibility.schedule_monday",
+            "schedule_disponibility.schedule_tuesday",
+            "schedule_disponibility.schedule_wednesday",
+            "schedule_disponibility.schedule_thursday",
+            "schedule_disponibility.schedule_friday",
+            "schedule_disponibility.schedule_saturday"
+        )
+        ->join("schedule_disponibility", "schedule_disponibility.id", "=", "schedule_settings.id")
+        ->get();
+
+        if ( isset($data) == true  ) {
             $schedule_settings = json_decode($data, TRUE);
             return view('config/add-schedule-config', compact('schedule_settings'));
         } else {
@@ -71,7 +89,7 @@ class ScheduleSettingsController extends Controller
 
         $days = $this->daysOfWeek($data);
 
-        $createSettings = Schedule_settings::updateOrCreate([
+        $createSettings = Schedule_settings::create([
             'schedule_id'             => (integer) $data["users_id"],
             'schedule_duration_limit' => (integer) $data["schedule_duration_limit"],
             'schedule_before_break'   => (integer) $data["schedule_before_break"],
@@ -85,7 +103,7 @@ class ScheduleSettingsController extends Controller
 
         $idSettings = json_decode($createSettings, TRUE);
 
-        Schedule_disponibility::updateOrCreate([
+        Schedule_disponibility::create([
             'schedule_disponibility_id' => $idSettings["id"],
             'schedule_sunday'           => $days["sunday"],
             'schedule_monday'           => $days["monday"],
@@ -97,8 +115,7 @@ class ScheduleSettingsController extends Controller
             'schedule_settings_id'      => $idSettings["id"]
         ]);
 
-        return redirect()->back()->with('success', "As configurações foram salvas com sucesso!");
-       
+        return redirect()->route('schedule.index')->with('message', 'As configurações foram salvas com sucesso!');
     }
 
     /**
@@ -141,9 +158,13 @@ class ScheduleSettingsController extends Controller
      * @param  \App\Models\Schedule_settings  $schedule_settings
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Schedule_settings $schedule_settings)
+    public function destroy($id)
     {
-        //
+        $disponibility = Schedule_disponibility::where("schedule_settings_id", $id)->delete();
+        $settings = Schedule_settings::where("id", $id)->delete();
+        
+
+        return redirect()->route('schedule.index')->with('message', 'Configurações excluídas com sucesso!');
     }
 
     function daysOfWeek($data){

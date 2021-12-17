@@ -28,8 +28,11 @@ Route::get('/configuracoes', function () {
 })->middleware(['auth'])->name('configuracoes');
 
 //Rotas de Configurações
-Route::get('/configuracoes', [ScheduleSettingsController::class, 'index'])->middleware('auth')->name('configuracoes');
-Route::get('/cadastro-configuracoes', [ScheduleSettingsController::class, 'create'])->middleware('auth')->name('cadastro-configuracoes');
-Route::post('/configuracoes', [ScheduleSettingsController::class, 'store'])->middleware('auth')->name('configuracoes');                
+Route::middleware(['auth'])->group(function () {
+    Route::get('/configuracoes', [ScheduleSettingsController::class, 'index'])->name('schedule.index');
+    Route::get('/cadastro-configuracoes', [ScheduleSettingsController::class, 'create'])->name('schedule.create');
+    Route::delete('/excluir-configuracoes/{id}', [ScheduleSettingsController::class, 'destroy'])->name('schedule.destroy');
+    Route::post('/configuracoes', [ScheduleSettingsController::class, 'store'])->name('schedule.store');
+});                
 
 require __DIR__.'/auth.php';

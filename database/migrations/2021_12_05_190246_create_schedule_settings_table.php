@@ -14,7 +14,7 @@ class CreateScheduleSettingsTable extends Migration
     public function up()
     {
         Schema::create('schedule_settings', function (Blueprint $table) {
-            $table->id('schedule_id');
+            $table->id();
             $table->integer('schedule_duration_limit');
             $table->integer('schedule_before_break');
             $table->integer('schedule_after_break');
