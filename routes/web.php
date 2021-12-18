@@ -32,7 +32,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/configuracoes', [ScheduleSettingsController::class, 'index'])->name('schedule.index');
     Route::get('/cadastro-configuracoes', [ScheduleSettingsController::class, 'create'])->name('schedule.create');
     Route::delete('/excluir-configuracoes/{id}', [ScheduleSettingsController::class, 'destroy'])->name('schedule.destroy');
-    Route::post('/configuracoes', [ScheduleSettingsController::class, 'store'])->name('schedule.store');
+    Route::get('/configuracoes/{id}', [ScheduleSettingsController::class, 'show'])->name('schedule.show');
+    Route::post('/salvar-configuracoes', [ScheduleSettingsController::class, 'store'])->name('schedule.store');
+    Route::post('/configuracoes', [ScheduleSettingsController::class, 'update'])->name('schedule.update');
 });                
 
 require __DIR__.'/auth.php';

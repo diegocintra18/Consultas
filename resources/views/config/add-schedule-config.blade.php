@@ -72,7 +72,7 @@
                         </td>
                         <td>
                             <div class="row">
-                                <a href="/{{$schedule['id']}}"><button type="button" class="btn btn-primary ml-1 mr-1">Editar</button></a>
+                                <a href="{{ route('schedule.show', $schedule['id']) }}"><button type="button" class="btn btn-primary ml-1 mr-1">Editar</button></a>
                                 <button type="button" class="btn btn-danger ml-1 mr-1" data-toggle="modal" data-target="#confirmExclude"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </td>
