@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Psy\VarDumper\Dumper;
 use ScheduleDisponibility;
+use SebastianBergmann\CodeCoverage\Driver\Xdebug2Driver;
 
 class ScheduleSettingsController extends Controller
 {
@@ -150,8 +151,6 @@ class ScheduleSettingsController extends Controller
         ->where("schedule_settings.id", $id)
         ->get();
 
-        
-
         if ( isset($data) == true  ) {
             $data = json_decode($data, TRUE);
             $schedule_settings = $data[0];
@@ -223,7 +222,6 @@ class ScheduleSettingsController extends Controller
         $disponibility = Schedule_disponibility::where("schedule_settings_id", $id)->delete();
         $settings = Schedule_settings::where("id", $id)->delete();
         
-
         return redirect()->route('schedule.index')->with('message', 'Configurações excluídas com sucesso!');
     }
 

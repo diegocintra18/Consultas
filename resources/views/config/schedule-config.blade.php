@@ -149,7 +149,7 @@
                                 @endif
                             </div>
                             <div class="form-group form-check">
-                                @if ($schedule_settings["schedule_friday"] == 0)
+                                @if ($schedule_settings["schedule_saturday"] == 0)
                                     <input type="checkbox" class="form-check-input" name="schedule_saturday" id="schedule_saturday">
                                     <label class="form-check-label" for="exampleCheck1">Sábado</label>
                                 @else

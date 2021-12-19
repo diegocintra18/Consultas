@@ -41,61 +41,61 @@
                 </thead>
                 <tbody>
                     @foreach ( $schedule_settings as $schedule )
-                    <tr>
-                        <td>{{$schedule["schedule_day_start"]}}</td>
-                        <td>{{$schedule["schedule_lunch_start"]}}</td>
-                        <td>{{$schedule["schedule_lunch_end"]}}</td>
-                        <td>{{$schedule["schedule_day_end"]}}</td>
-                        <td>{{$schedule["schedule_duration_limit"]}} minutos</td>
-                        <td>
-                            @if( $schedule["schedule_sunday"] == 1 )
-                                Domingo<br>
-                            @endif
-                            @if ( $schedule["schedule_monday"] == 1 )
-                                Segunda<br>
-                            @endif
-                            @if ( $schedule["schedule_tuesday"] == 1 )
-                                Terça<br>
-                            @endif
-                            @if ( $schedule["schedule_wednesday"] == 1 )
-                                Quarta<br>
-                            @endif
-                            @if ( $schedule["schedule_thursday"] == 1 )
-                                Quinta<br>
-                            @endif
-                            @if ( $schedule["schedule_friday"] == 1 )
-                                Sexta<br>
-                            @endif
-                            @if ( $schedule["schedule_saturday"] == 1 )
-                                Sábado<br>
-                            @endif
-                        </td>
-                        <td>
-                            <div class="row">
-                                <a href="{{ route('schedule.show', $schedule['id']) }}"><button type="button" class="btn btn-primary ml-1 mr-1">Editar</button></a>
-                                <button type="button" class="btn btn-danger ml-1 mr-1" data-toggle="modal" data-target="#confirmExclude"><i class="fas fa-trash-alt"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="confirmExclude" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-body p-5">
-                                    <h4>Você tem certeza de que deseja realizar a exclusão desta regra de agendamento?</h4>
+                        <tr>
+                            <td>{{$schedule["schedule_day_start"]}}</td>
+                            <td>{{$schedule["schedule_lunch_start"]}}</td>
+                            <td>{{$schedule["schedule_lunch_end"]}}</td>
+                            <td>{{$schedule["schedule_day_end"]}}</td>
+                            <td>{{$schedule["schedule_duration_limit"]}} minutos</td>
+                            <td>
+                                @if( $schedule["schedule_sunday"] == 1 )
+                                    Domingo<br>
+                                @endif
+                                @if ( $schedule["schedule_monday"] == 1 )
+                                    Segunda<br>
+                                @endif
+                                @if ( $schedule["schedule_tuesday"] == 1 )
+                                    Terça<br>
+                                @endif
+                                @if ( $schedule["schedule_wednesday"] == 1 )
+                                    Quarta<br>
+                                @endif
+                                @if ( $schedule["schedule_thursday"] == 1 )
+                                    Quinta<br>
+                                @endif
+                                @if ( $schedule["schedule_friday"] == 1 )
+                                    Sexta<br>
+                                @endif
+                                @if ( $schedule["schedule_saturday"] == 1 )
+                                    Sábado<br>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="row">
+                                    <a href="{{ route('schedule.show', $schedule['id']) }}"><button type="button" class="btn btn-primary ml-1 mr-1">Editar</button></a>
+                                    <button type="button" class="btn btn-danger ml-1 mr-1" data-toggle="modal" data-target="#confirmExclude{{$schedule['id']}}"><i class="fas fa-trash-alt"></i></button>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                    <form action="{{ route('schedule.destroy', $schedule['id']) }}" method="post">
-                                        @csrf
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <button type="submit" class="btn btn-success">Confirmar exclusão</button>
-                                    </form>
+                            </td>
+                        </tr>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="confirmExclude{{$schedule['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body p-5">
+                                        <h4>Você tem certeza de que deseja realizar a exclusão desta regra de agendamento?</h4>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        <form action="{{ route('schedule.destroy', $schedule['id']) }}" method="post">
+                                            @csrf
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button type="submit" class="btn btn-success">Confirmar exclusão</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     @endforeach
                 </tbody>
             </table>
