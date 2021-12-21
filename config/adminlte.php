@@ -252,9 +252,19 @@ return [
             'icon'        => 'fas fa-clipboard-list',
         ],
         [
+            'text'        => 'Pacientes',
+            'url'         => '/pacientes',
+            'icon'        => 'fas fa-users',
+        ],
+        [
             'text'        => 'Configurações',
             'url'         => '/configuracoes',
             'icon'        => 'fas fa-cog',
+        ],
+        [
+            'text'        => 'Bloqueio de datas',
+            'url'         => '/exclusao',
+            'icon'        => 'far fa-calendar-times',
         ],
         ['header' => 'account_settings'],
         [

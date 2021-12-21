@@ -70,21 +70,6 @@ class ScheduleSettingsController extends Controller
      */
     public function store(storeUpdateSettings $request)
     {
-        
-        // $horaEntrada = strtotime($request->input('schedule_day_start'));
-        // $saidaAlmoco =  strtotime($request->input('schedule_lunch_start'));
-        // $retornoAlmoco = strtotime($request->input('schedule_lunch_end'));
-        // $horaSaida = strtotime($request->input('schedule_day_end'));
-
-        // if ( $horaEntrada >= $saidaAlmoco ) {
-        //     return redirect()->back()->with('error', "O horário de almoço não pode ser menor que o horário de entrada");
-        // }
-        // if ( $saidaAlmoco >= $retornoAlmoco ) {
-        //     return redirect()->back()->with('error', "O horário de saída do almoço não pode ser menor que o horário de retorno");
-        // }
-        // if ( $retornoAlmoco >= $horaSaida ) {
-        //     return redirect()->back()->with('error', "O horário de retorno do almoço não pode ser maior que o horário de final do expediente");
-        // }
 
         $this->scheduleValidation($request);
 

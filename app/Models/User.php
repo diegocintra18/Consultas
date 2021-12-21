@@ -45,4 +45,8 @@ class User extends Authenticatable
     public function schedule_settings() {
         return $this->belongsTo(Schedule_settings::class);
     }
+
+    public function schedule_excludes() {
+        return $this->belongsTo(Schedule_exclude::class);
+    }
 }

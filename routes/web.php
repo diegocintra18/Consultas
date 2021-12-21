@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ScheduleExcludeController;
 use App\Http\Controllers\ScheduleSettingsController;
 use App\Models\Schedule_settings;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/configuracoes/{id}', [ScheduleSettingsController::class, 'show'])->name('schedule.show');
     Route::post('/salvar-configuracoes', [ScheduleSettingsController::class, 'store'])->name('schedule.store');
     Route::post('/configuracoes', [ScheduleSettingsController::class, 'update'])->name('schedule.update');
+
+    Route::get('/exclusao', [ScheduleExcludeController::class, 'index'])->name('scheduleexclude.index');
+    Route::post('/cadastro-exclusao', [ScheduleExcludeController::class, 'store'])->name('scheduleexclude.store');
+    Route::delete(';excluir-exclusaoagenda/{id}', [ScheduleExcludeController::class, 'destroy'])->name('scheduleexclude.destroy');
 });                
 
 require __DIR__.'/auth.php';
