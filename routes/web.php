@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ScheduleExcludeController;
 use App\Http\Controllers\ScheduleSettingsController;
 use App\Models\Schedule_settings;
@@ -40,6 +41,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/exclusao', [ScheduleExcludeController::class, 'index'])->name('scheduleexclude.index');
     Route::post('/cadastro-exclusao', [ScheduleExcludeController::class, 'store'])->name('scheduleexclude.store');
     Route::delete('excluir-exclusaoagenda/{id}', [ScheduleExcludeController::class, 'destroy'])->name('scheduleexclude.destroy');
-});                
+});
+
+//Rotas de Pacientes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/pacientes', [PatientController::class, 'index'])->name('patients.index');
+});  
 
 require __DIR__.'/auth.php';
