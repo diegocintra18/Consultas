@@ -50,7 +50,7 @@
                                 ?>
                             </td>
                             <td>
-                                <button type="button" id="exclude{{$e['id']}}" class="btn btn-danger ml-1 mr-1" data-toggle="modal" data-target="#confirmExclude"><i class="fas fa-trash-alt"></i></button>
+                                <button type="button" onClick="mudarAction({{$e['id']}})" class="btn btn-danger ml-1 mr-1" data-toggle="modal" data-target="#exampleModal" data-whatever="{{$e['id']}}"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
                     @endforeach
@@ -78,22 +78,22 @@
         </div>
     </div>
 
-    <!-- Model de exclusão de data -->
-    <div class="modal fade" id="{{$e['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Modal de exclusão de bloqueio -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body p-5">
-                    <h4>Você tem certeza de que deseja realizar a exclusão deste bloqueio de agendamento?</h4>
-                </div>
-                <div class="modal-footer">
-                    <form action="{{ route('scheduleexclude.destroy', $e['id']) }}" method="post">
-                        @csrf
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="btn btn-success">Confirmar exclusão</button>
-                    </form>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                </div>
+          <div class="modal-content">
+            <div class="modal-body">
+                <h3>Deseja realmente excluir esta data de bloqueio?</h3>
             </div>
+            <div class="modal-footer">
+                <form class="form-teste" id="formulario" action="" method="post">
+                    @csrf
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-success">Sim</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+          </div>
         </div>
     </div>
 
@@ -104,25 +104,10 @@
 @stop
 
 @section('js')
-
-let = `
-    <div class="modal fade" id="confirmExclude" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body p-5">
-                    <h4>Você tem certeza de que deseja realizar a exclusão deste bloqueio de agendamento?</h4>
-                </div>
-                <div class="modal-footer">
-                    <form action="{{ route('scheduleexclude.destroy') }}" method="post">
-                        @csrf
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="btn btn-success">Confirmar exclusão</button>
-                    </form>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-`;
-
+<script>
+    function mudarAction(id){
+        var route = "excluir-exclusaoagenda/";
+        document.getElementById('formulario').action = route + id;
+    }
+</script>
 @stop

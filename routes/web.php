@@ -39,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/exclusao', [ScheduleExcludeController::class, 'index'])->name('scheduleexclude.index');
     Route::post('/cadastro-exclusao', [ScheduleExcludeController::class, 'store'])->name('scheduleexclude.store');
-    Route::delete(';excluir-exclusaoagenda/{id}', [ScheduleExcludeController::class, 'destroy'])->name('scheduleexclude.destroy');
+    Route::delete('excluir-exclusaoagenda/{id}', [ScheduleExcludeController::class, 'destroy'])->name('scheduleexclude.destroy');
 });                
 
 require __DIR__.'/auth.php';
