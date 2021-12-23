@@ -9,7 +9,9 @@
         </div>
         <div class="col">
             <div class="float-right">
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#excludeDate">Cadastrar paciente</button>
+                <a href="{{ route('patients.create') }}">
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#excludeDate">Cadastrar paciente</button>
+                </a>
             </div>
         </div>
     </div>

@@ -46,6 +46,8 @@ Route::middleware(['auth'])->group(function () {
 //Rotas de Pacientes
 Route::middleware(['auth'])->group(function () {
     Route::get('/pacientes', [PatientController::class, 'index'])->name('patients.index');
+    Route::get('/cadastrar-paciente', [PatientController::class, 'create'])->name('patients.create');
+    Route::post('/cadastrar-paciente', [PatientController::class, 'store'])->name('patients.store');
 });  
 
 require __DIR__.'/auth.php';

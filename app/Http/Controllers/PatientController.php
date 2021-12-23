@@ -24,7 +24,7 @@ class PatientController extends Controller
      */
     public function create()
     {
-        //
+        return view('patients.add-patients');
     }
 
     /**
@@ -35,7 +35,9 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        echo "<pre>";
+        print_r($request->all());
+        echo "</pre>";
     }
 
     /**

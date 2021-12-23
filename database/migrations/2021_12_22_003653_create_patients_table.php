@@ -17,7 +17,7 @@ class CreatePatientsTable extends Migration
             $table->id();
             $table->char('patient_firstname', 20);
             $table->char('patient_lastname', 100);
-            $table->char('patient_cpf', 11);
+            $table->char('patient_cpf', 11)->unique();
             $table->char('patient_phone',17);
             $table->char('patient_email', 120);
             $table->integer('patient_gender');
