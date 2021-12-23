@@ -32,7 +32,7 @@
     @endif
 
     @if ( isset($exclude) )
-        <div class="container bg-white">
+        <div class="container-fluid bg-white">
             <table class="table table-hover">
                 <thead>
                 <tr>

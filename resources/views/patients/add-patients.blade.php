@@ -61,30 +61,34 @@
                     <h2 class="mb-3">Endereço</h2>
                     <div class="form-group">
                         <label class="form-check-label" >CEP</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="address_zipcode">
+                        <input type="text" class="form-control" id="address_zipcode" name="address_zipcode" value="" size="10" maxlength="9" onblur="MascaraCep(this.value);" >
                     </div>
                     <div class="form-group">
                         <label class="form-check-label" >Logradouro</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="adress_name">
+                        <input type="text" class="form-control" id="adress_name" name="adress_name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-check-label" >Bairro</label>
+                        <input type="text" class="form-control" id="adress_district" name="adress_district">
                     </div>
                     <div class="form-group row">
                         <div class="col">
                             <label class="form-check-label" >Número</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1" name="address_number">
+                            <input type="text" class="form-control" id="address_number" name="address_number">
                         </div>
                         <div class="col">
                             <label class="form-check-label" >Complemento</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1" name="address_complement">
+                            <input type="text" class="form-control" id="address_complement" name="address_complement">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-check-label" >Cidade</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="address_city">
+                        <input type="text" class="form-control" id="address_city" name="address_city">
                     </div>
                     <div class="form-group row" style="align-items: center;">
                         <label class="col-2 col-form-label form-check-label">UF</label>
                         <div class="col-10">
-                            <select class="form-control" id="exampleFormControlSelect1" name="address_uf">
+                            <select class="form-control" id="address_uf" name="address_uf">
                                 <option>AC</option>
                                 <option>AL</option>
                                 <option>AP</option>
@@ -127,5 +131,33 @@
 @stop
 
 @section('js')
-    <link rel="text/javascript" href="/js/patients.js">
+    <script type="text/javascript">
+		$("#address_zipcode").focusout(function(){
+			//Início do Comando AJAX
+			$.ajax({
+				//O campo URL diz o caminho de onde virá os dados
+				//É importante concatenar o valor digitado no CEP
+				url: 'https://viacep.com.br/ws/'+$(this).val()+'/json/unicode/',
+				//Aqui você deve preencher o tipo de dados que será lido,
+				//no caso, estamos lendo JSON.
+				dataType: 'json',
+				//SUCESS é referente a função que será executada caso
+				//ele consiga ler a fonte de dados com sucesso.
+				//O parâmetro dentro da função se refere ao nome da variável
+				//que você vai dar para ler esse objeto.
+				success: function(resposta){
+					//Agora basta definir os valores que você deseja preencher
+					//automaticamente nos campos acima.
+					$("#adress_name").val(resposta.logradouro);
+					$("#address_complement").val(resposta.complemento);
+					$("#adress_district").val(resposta.bairro);
+					$("#address_city").val(resposta.localidade);
+					$("#address_uf").val(resposta.uf);
+					//Vamos incluir para que o Número seja focado automaticamente
+					//melhorando a experiência do usuário
+					$("#address_number").focus();
+				}
+			});
+		});
+	</script>
 @stop
