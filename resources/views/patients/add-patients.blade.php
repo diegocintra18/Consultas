@@ -3,6 +3,7 @@
 @section('title', 'Pacientes')
 
 @section('content_header')
+    <h2 class="m-3">Cadastro de Pacientes</h2>
 @stop
 
 @section('content')
@@ -14,31 +15,32 @@
         </div>
     @endif
     
-    <div class="p-3 bg-white">
+    <div class="p-3">
         <form method="POST" action="{{ route('patients.store') }}">
             @csrf
             <div class="row">
-                <div class="col-5 p-3 border border-secondary">
+                <div class="col-5 p-3 bg-white border border-secondary">
                     <h2 class="mb-3">Dados Pessoais</h2>
                     <div class="form-group">
                         <label class="form-check-label">Primeiro Nome</label>
-                        <input type="textt" class="form-control" id="exampleInputEmail1" name="patient_firstname">
+                        <input type="textt" class="form-control" id="exampleInputEmail1" name="patient_firstname" placeholder="Ned" size="20" minlength="3" maxlength="20">
                     </div>
                     <div class="form-group">
                         <label class="form-check-label">Sobrenome</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="patient_lastname">
+                        <input type="text" class="form-control" id="exampleInputPassword1" name="patient_lastname" placeholder="Stark" size="100" minlength="3" maxlength="100">
                     </div>
                     <div class="form-group">
                         <label class="form-check-label">CPF</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="patient_cpf">
+                        <input type="text" class="form-control" id="patient_cpf" placeholder="740.718.800-90" name="patient_cpf">
+                        <div id="cpf_feedback" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
                         <label class="form-check-label">Celular</label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" name="patient_phone">
+                        <input type="text" class="form-control" id="patient_phone" placeholder="(16)99123-4567" name="patient_phone">
                     </div>
                     <div class="form-group">
                         <label class="form-check-label">E-mail</label>
-                        <input type="email" class="form-control" id="exampleInputPassword1" name="patient_email">
+                        <input type="email" class="form-control" id="exampleInputPassword1" name="patient_email" placeholder="seuemail@email.com" size="120" maxlength="120">
                     </div>
                     <div class="form-group row">
                         <label class="col-2 col-form-label form-check-label">Gênero</label>
@@ -57,33 +59,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-5 ml-5 p-3 border border-secondary">
+                <div class="col-5 ml-5 p-3 bg-white border border-secondary">
                     <h2 class="mb-3">Endereço</h2>
                     <div class="form-group">
                         <label class="form-check-label" >CEP</label>
-                        <input type="text" class="form-control" id="address_zipcode" name="address_zipcode" value="" size="10" maxlength="9" onblur="MascaraCep(this.value);" >
+                        <input type="text" class="form-control" id="address_zipcode" name="address_zipcode" placeholder="14500-123" size="10" maxlength="9">
+                        <div id="address_feedback" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
                         <label class="form-check-label" >Logradouro</label>
-                        <input type="text" class="form-control" id="adress_name" name="adress_name">
+                        <input type="text" class="form-control" id="adress_name" name="adress_name" placeholder="Av Brasil" size="200" maxlength="200">
                     </div>
                     <div class="form-group">
                         <label class="form-check-label" >Bairro</label>
-                        <input type="text" class="form-control" id="adress_district" name="adress_district">
+                        <input type="text" class="form-control" id="adress_district" placeholder="Jardim das Oliveiras" name="adress_district">
                     </div>
                     <div class="form-group row">
                         <div class="col">
                             <label class="form-check-label" >Número</label>
-                            <input type="text" class="form-control" id="address_number" name="address_number">
+                            <input type="text" class="form-control" id="address_number" name="address_number" placeholder="1234" size="5" maxlength="5">
                         </div>
                         <div class="col">
                             <label class="form-check-label" >Complemento</label>
-                            <input type="text" class="form-control" id="address_complement" name="address_complement">
+                            <input type="text" placeholder="Casa, apartamento, fundos e etc" class="form-control" id="address_complement" name="address_complement">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-check-label" >Cidade</label>
-                        <input type="text" class="form-control" id="address_city" name="address_city">
+                        <input type="text" class="form-control" id="address_city" name="address_city" placeholder="Franca" size="30" maxlength="30">
                     </div>
                     <div class="form-group row" style="align-items: center;">
                         <label class="col-2 col-form-label form-check-label">UF</label>
@@ -119,45 +122,18 @@
                             </select>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success btn-block">Salvar</button>
+                    <button type="submit" class="btn btn-success btn-block" disabled>Salvar</button>
                 </div>
             </div>
         </form>
     </div>
+    
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
 
 @section('js')
-    <script type="text/javascript">
-		$("#address_zipcode").focusout(function(){
-			//Início do Comando AJAX
-			$.ajax({
-				//O campo URL diz o caminho de onde virá os dados
-				//É importante concatenar o valor digitado no CEP
-				url: 'https://viacep.com.br/ws/'+$(this).val()+'/json/unicode/',
-				//Aqui você deve preencher o tipo de dados que será lido,
-				//no caso, estamos lendo JSON.
-				dataType: 'json',
-				//SUCESS é referente a função que será executada caso
-				//ele consiga ler a fonte de dados com sucesso.
-				//O parâmetro dentro da função se refere ao nome da variável
-				//que você vai dar para ler esse objeto.
-				success: function(resposta){
-					//Agora basta definir os valores que você deseja preencher
-					//automaticamente nos campos acima.
-					$("#adress_name").val(resposta.logradouro);
-					$("#address_complement").val(resposta.complemento);
-					$("#adress_district").val(resposta.bairro);
-					$("#address_city").val(resposta.localidade);
-					$("#address_uf").val(resposta.uf);
-					//Vamos incluir para que o Número seja focado automaticamente
-					//melhorando a experiência do usuário
-					$("#address_number").focus();
-				}
-			});
-		});
-	</script>
+    <script src="/js/jquery.inputmask.js"></script>
+    <script src="{{ URL::asset('/js/patients.js') }}"></script>
 @stop
