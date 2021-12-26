@@ -19,6 +19,7 @@ class CreateAddressesTable extends Migration
             $table->integer('address_number');
             $table->integer('address_zipcode');
             $table->char('address_complement', 100);
+            $table->char('address_district', 50);
             $table->char('address_city', 30);
             $table->char('address_uf', 2);
             $table->timestamps();

@@ -1,3 +1,36 @@
+function checkInputs(inputs) {
+
+    var filled = true;
+  
+    inputs.forEach(function(input) {
+    
+        if(input.value === "") {
+            filled = false;
+        }
+  
+    });
+  
+  return filled;
+  
+}
+
+var inputs = document.querySelectorAll("input");
+var button = document.querySelector("button");
+
+inputs.forEach(function(input) {
+    
+  input.addEventListener("keyup", function() {
+
+    if ( checkInputs(inputs )) {
+        button.disabled = false;
+    } else {
+        button.disabled = true;
+    }
+
+  });
+
+});
+
 function isValidCPF(cpf) {
     // Validar se é String
     if (typeof cpf !== 'string') return false
@@ -43,7 +76,20 @@ $("#patient_cpf").focusout(function(){
     } else {
         $("#patient_cpf").addClass("is-invalid");
         $("#cpf_feedback").empty();
+        button.disabled = true;
         $("#cpf_feedback").append("O CPF digitado é inválido, verifique os números e digite novamente!");
+    }
+});
+
+$('#patient_birth_date').focusout(function(){
+    var data = new Date();
+    var dia = data.getDate();
+    var mes = data.getMonth();
+    var ano = data.getFullYear();
+    var dataCompleta = ano + '-' + mes + '-' + dia;
+
+    if( this.value.getTime() > dataCompleta.getTime() ){
+        alert(data1 + ' - ' + data2);
     }
 });
 
@@ -87,11 +133,9 @@ $("#address_zipcode").focusout(function(){
                         //automaticamente nos campos acima.
                         $("#adress_name").val(resposta.logradouro);
                         $("#address_complement").val(resposta.complemento);
-                        $("#adress_district").val(resposta.bairro);
+                        $("#address_district").val(resposta.bairro);
                         $("#address_city").val(resposta.localidade);
                         $("#address_uf").val(resposta.uf);
-                        //Vamos incluir para que o Número seja focado automaticamente
-                        //melhorando a experiência do usuário
                         $("#address_number").focus();
                     }
                 });
@@ -106,37 +150,4 @@ $("#address_zipcode").focusout(function(){
 
     }
     
-});
-
-function checkInputs(inputs) {
-
-    var filled = true;
-  
-  inputs.forEach(function(input) {
-    
-    if(input.value === "") {
-        filled = false;
-    }
-  
-    });
-  
-  return filled;
-  
-}
-
-var inputs = document.querySelectorAll("input");
-var button = document.querySelector("button");
-
-inputs.forEach(function(input) {
-    
-  input.addEventListener("keyup", function() {
-
-    if(checkInputs(inputs)) {
-      button.disabled = false;
-    } else {
-      button.disabled = true;
-    }
-
-  });
-
 });

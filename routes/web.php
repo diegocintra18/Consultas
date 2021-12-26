@@ -48,6 +48,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pacientes', [PatientController::class, 'index'])->name('patients.index');
     Route::get('/cadastrar-paciente', [PatientController::class, 'create'])->name('patients.create');
     Route::post('/cadastrar-paciente', [PatientController::class, 'store'])->name('patients.store');
+    Route::get('/editar-paciente/{id}', [PatientController::class, 'show'])->name('patients.show');
+    Route::post('/atualizar-paciente', [PatientController::class, 'update'])->name('patients.update');
+    Route::delete('/excluir-paciente/{id}', [PatientController::class, 'destroy'])->name('patients.destroy');
 });  
 
 require __DIR__.'/auth.php';
