@@ -82,26 +82,26 @@ $("#patient_cpf").focusout(function(){
 });
 
 $('#patient_birth_date').focusout(function(){
+    //Criando variáveis de datas
     var data = new Date();
-    var dia = data.getDate();
-    var mes = data.getMonth();
-    var ano = data.getFullYear();
-    var dataCompleta = ano + '-' + mes + '-' + dia;
-
-    if( this.value.getTime() > dataCompleta.getTime() ){
-        alert(data1 + ' - ' + data2);
+    var dataForm = this.value;
+    //Verificando se a data de nascimento é maior que hoje
+    if ( Date.parse(dataForm) > Date.parse(data) ) {
+        alert('A data de nascimento não pode ser maior que hoje!');
+        document.getElementById("patient_birth_date").value = "";
+        $("#patient_birth_date").focus();
     }
 });
 
 $(document).ready(function(){
     $("#address_zipcode").inputmask("99999-999");
     $("#patient_cpf").inputmask("999.999.999-99");
-    $("#patient_phone").inputmask("(99) 99999-9999");
+    $("#patient_phone").inputmask("(99)99999-9999");
 });
 
 $("#address_zipcode").focusout(function(){
     
-    if ( this.value != "" ){
+    if ( this.value != "" ) {
 
         var cep = this.value;
 
