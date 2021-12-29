@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ScheduleExcludeController;
 use App\Http\Controllers\ScheduleSettingsController;
 use App\Models\Schedule_settings;
@@ -51,6 +52,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/editar-paciente/{id}', [PatientController::class, 'show'])->name('patients.show');
     Route::post('/atualizar-paciente', [PatientController::class, 'update'])->name('patients.update');
     Route::delete('/excluir-paciente/{id}', [PatientController::class, 'destroy'])->name('patients.destroy');
+});
+
+//Rotas de Consultas
+Route::middleware(['auth'])->group(function () {
+    Route::get('/consultas', [ScheduleController::class, 'index'])->name('schedule.index');
+    Route::get('/agendar-consulta', [ScheduleController::class, 'create'])->name('schedule.create');
+    // Route::post('/cadastrar-paciente', [PatientController::class, 'store'])->name('patients.store');
+    // Route::get('/editar-paciente/{id}', [PatientController::class, 'show'])->name('patients.show');
+    // Route::post('/atualizar-paciente', [PatientController::class, 'update'])->name('patients.update');
+    // Route::delete('/excluir-paciente/{id}', [PatientController::class, 'destroy'])->name('patients.destroy');
 });  
 
 require __DIR__.'/auth.php';
