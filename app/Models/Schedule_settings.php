@@ -27,6 +27,10 @@ class Schedule_settings extends Model
         return $this->hasMany(User::class);
     }
 
+    public function availables() {
+        return $this->hasMany(Available::class);
+    }
+
     public function schedule_disponibility() {
         return $this->hasMany(Schedule_disponibility::class);
     }

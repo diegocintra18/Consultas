@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Available;
 use App\Models\Schedule;
+use App\Models\Schedule_exclude;
 use App\Models\Schedule_settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,12 +33,24 @@ class ScheduleController extends Controller
         $data = Schedule_settings::where('user_id', $user)->with('schedule_disponibility')->get();
         $disponibility = json_decode($data, TRUE);
 
+        $data = Schedule_exclude::where('user_id', $user)->select('exclude_date')->get();
+        $exclude = json_decode($data, TRUE);
+
+        // echo "<pre>";
+        // print_r($disponibility);
+        // echo "</pre>";
+        // die;
+        $data = Available::where('schedule_settings_id', $disponibility[0]['schedule_disponibility'][0]['schedule_settings_id'])->get();
+        $available = json_decode($data, TRUE);
+
         if ($disponibility == null){
             $disponibility = 'Não há regras de agendamento criadas, cadastre-as para agendar uma consulta';
         }
 
         return view('schedule.add-schedule', [
             'disponibility' => $disponibility,
+            'exclude' => $exclude,
+            'available' => $available
         ]);
     }
 

@@ -56,8 +56,8 @@ Route::middleware(['auth'])->group(function () {
 
 //Rotas de Consultas
 Route::middleware(['auth'])->group(function () {
-    Route::get('/consultas', [ScheduleController::class, 'index'])->name('schedule.index');
-    Route::get('/agendar-consulta', [ScheduleController::class, 'create'])->name('schedule.create');
+    Route::get('/consultas', [ScheduleController::class, 'index'])->name('schedules.index');
+    Route::get('/agendar-consulta', [ScheduleController::class, 'create'])->name('schedules.create');
     // Route::post('/cadastrar-paciente', [PatientController::class, 'store'])->name('patients.store');
     // Route::get('/editar-paciente/{id}', [PatientController::class, 'show'])->name('patients.show');
     // Route::post('/atualizar-paciente', [PatientController::class, 'update'])->name('patients.update');

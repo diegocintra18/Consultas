@@ -36,7 +36,59 @@
         </div>
     @endif
 
-    @if ( isset($patients) )
+    <div class="container-fluid bg-white p-3">
+        <center>
+            <div id="search-container" class="col-6 text-center">
+                <form action="{{ route('patients.index') }}" method="get">
+                    @csrf
+                    <label for="searchPatients">Pesquise pelo nome do Paciente</label>
+                    <div class="form-group row">
+                        <input type="text" name="searchPatients" class="col form-control" placeholder="Digite o nome do paciente" id="">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Pesquisar</button>
+                    </div>
+                </form>
+            </div>
+        </center>
+    </div>
+
+    @if ( isset($search) )
+        <div class="container bg-white">
+            <center>
+                <h3>Resultados para a busca:</h3>
+            </center>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col" class="text-center">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                    @foreach ($search as $p)
+                        <tr>
+                            <td>{{ $p['patient_firstname']}} {{ $p['patient_lastname'] }}</td>
+                            <td>
+                                <?php 
+                                    $bloco1 = substr($p['patient_cpf'],0,3);
+                                    $bloco2 = substr($p['patient_cpf'],3,3);
+                                    $bloco3 = substr($p['patient_cpf'],6,3);
+                                    $dig_verificador = substr($p['patient_cpf'],-2);
+                                    echo $bloco1 . "." . $bloco2 . "." . $bloco3 . "-" . $dig_verificador;
+                                ?>
+                            </td>
+                            <td class="text-center">
+                                <a href="{{ route('patients.show', $p['id']) }}"><button type="button" class="btn btn-primary">Editar</button></a>
+                                <button type="button" class="btn btn-warning">Agendar Consulta</button>
+                                <button type="button" onClick="mudarAction({{$p['id']}})" class="btn btn-danger ml-1 mr-1" data-toggle="modal" data-target="#exampleModal" data-whatever="{{$p['id']}}"><i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+    @elseif ( isset($patients) )
         <div class="container bg-white">
             <table class="table table-hover">
                 <thead>

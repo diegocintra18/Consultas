@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ScheduleDisponibility extends Migration
+class CreateAvailablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class ScheduleDisponibility extends Migration
      */
     public function up()
     {
-        Schema::create('schedule_disponibility', function (Blueprint $table) {
+        Schema::create('availables', function (Blueprint $table) {
             $table->id();
-            $table->integer('schedule_sunday');
-            $table->integer('schedule_monday');
-            $table->integer('schedule_tuesday');
-            $table->integer('schedule_wednesday');
-            $table->integer('schedule_thursday');
-            $table->integer('schedule_friday');
-            $table->integer('schedule_saturday');
+            $table->time('available_start');
+            $table->time('available_end');
             $table->foreignId('schedule_settings_id')->constrained('schedule_settings');
             $table->timestamps();
         });
@@ -34,7 +29,7 @@ class ScheduleDisponibility extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('schedule_disponibility');
+        Schema::dropIfExists('availables');
 
         Schema::table('schedule_settings', function (Blueprint $table) {
             $table->foreignId('schedule_settings_id')

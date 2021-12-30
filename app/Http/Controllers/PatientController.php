@@ -16,20 +16,32 @@ class PatientController extends Controller
      */
     public function index()
     {
-        $data = Patient::select(
-            'id',
-            'patient_firstname',
-            'patient_lastname',
-            'patient_cpf'
-        )
-        ->orderBy('id')
-        ->get();
+        
+        $data = request('searchPatients');
 
-        if ( isset($data) == true  ) {
-            $patients = json_decode($data, TRUE);
-            return view('patients.patients', compact('patients'));
+        if ( $data ) {
+            $search = Patient::where([
+                ['patient_firstname', 'like', '%'.$data.'%']
+            ])->orWhere('patient_lastname', 'like', '%'.$data.'%')
+            ->orWhere('patient_cpf', 'like', '%'.$data.'%')
+            ->get();
+            return view('patients.patients', compact('search'));
         } else {
-            return view('patients.patients');
+            $data = Patient::select(
+                'id',
+                'patient_firstname',
+                'patient_lastname',
+                'patient_cpf'
+            )
+            ->orderBy('id')
+            ->get();
+    
+            if ( isset($data) == true  ) {
+                $patients = json_decode($data, TRUE);
+                return view('patients.patients', compact('patients'));
+            } else {
+                return view('patients.patients');
+            }
         }
     }
 
@@ -41,6 +53,12 @@ class PatientController extends Controller
     public function create()
     {
         return view('patients.add-patients');
+    }
+
+    public function search(){
+
+        
+        
     }
 
     /**

@@ -37,8 +37,8 @@
             <div class="form-group">
                 <p>1º passo: pesquise ou cadastre um paciente através dos botões abaixo:</p>
                 <p>2º passo: agende um horário de acordo com a disponibilidade de agendamento.</p>
-                <button class="btn btn-primary">Pesquisar paciente</button>
-                <button class="btn btn-success">Cadastrar paciente</button>
+                <a href="{{route('patients.index')}}"><span class="btn btn-primary">Pesquisar paciente</span></a>
+                <a href="{{route('patients.create')}}"><span class="btn btn-success">Cadastrar paciente</span></a>
             </div>       
             <div class="form-group">
                 <label for="disabledTextInput">Nome</label>
@@ -54,7 +54,7 @@
                     <input type="date" id="disabledTextInput" class="form-control" disabled>
                 </div>
                 <div class="col">
-                    <label for="disabledTextInput">Gênero   </label>
+                    <label for="disabledTextInput">Gênero</label>
                     <input type="text" id="disabledTextInput" class="form-control" disabled>
                 </div>
             </div>
@@ -71,50 +71,72 @@
             <div class="form-group">
                 <h4 class="mt-4 mb-3">Disponibilidade de agendamento</h4>
             </div>
-            <div class="form-group row">
-                <div class="col">
-                    <label for="schedule_date">Data da consulta</label>
-                    <input type="text" id="datepicker"></p>
+            <div class="form-group">
+                <label for="schedule_date">Data da consulta</label><br>
+                <div class="col-4">
+                    <input type="text" class="form-control" id="datepicker">
                 </div>
-                <div class="col">
-                    <label for="schedule_hour">Horário da consulta</label>
-                    <input type="time" name="schedule_hour" id="schedule_hour">
+            </div>
+            <div class="form-group">
+                <label class="col col-form-label" for="schedule_hour">Horário da consulta</label>
+                <div class="col-4">
+                    <select class="form-control" id="schedule_hour" name="schedule_hour">
+                        
+                        <?php
+                            foreach ($available as $a){
+                                $start = strtotime($a['available_start']);
+                                $end = strtotime($a['available_end']);
+                                echo "<option>" .  date('H:i', $start) . " às " . date('H:i', $end) . "</option>";
+                            }
+                        ?>
+                    </select>
+                    
                 </div>
             </div>
             <button type="submit" class="btn btn-success">Salvar</button>
         </form>
     </div>
-    <pre>
-        {{var_dump($disponibility)}}
-        <?php
-            $day = $disponibility[0]['schedule_disponibility'];
-            $days = "";
-            if ( $day[0]['schedule_sunday'] == 0) { $days .= '[Domingo],'; }
-            if ( $day[0]['schedule_monday'] == 0) { $days .=  '[Segunda],'; }
-            if ( $day[0]['schedule_tuesday'] == 0) { $days .=  '[Terça],'; }
-            if ( $day[0]['schedule_wednesday'] == 0) { $days .=  '[Quarta],'; }
-            if ( $day[0]['schedule_thursday'] == 0) { $days .= '[Quinta],'; }
-            if ( $day[0]['schedule_friday'] == 0) { $days .= '[Sexta],'; }
-            if ( $day[0]['schedule_saturday'] == 0) { $days .= '[Sábado],'; }
-        ?>
-    </pre>
+
+    <?php
+
+        $day = $disponibility[0]['schedule_disponibility'];
+        $excludeDays = "";
+        $days = "";
+
+        if ( $day[0]['schedule_sunday'] == 0) { $days .= '[Domingo],'; }
+        if ( $day[0]['schedule_monday'] == 0) { $days .=  '[Segunda],'; }
+        if ( $day[0]['schedule_tuesday'] == 0) { $days .=  '[Terça],'; }
+        if ( $day[0]['schedule_wednesday'] == 0) { $days .=  '[Quarta],'; }
+        if ( $day[0]['schedule_thursday'] == 0) { $days .= '[Quinta],'; }
+        if ( $day[0]['schedule_friday'] == 0) { $days .= '[Sexta],'; }
+        if ( $day[0]['schedule_saturday'] == 0) { $days .= '[Sábado],'; }
+
+        foreach ($exclude as $e) {
+            $date = $e['exclude_date'];
+            $timestamp = strtotime($date);
+            $newDate = date("m,d,Y", $timestamp);
+            $excludeDays .= '['.$newDate.'],';
+        }
+
+    ?>
 @stop
 
 @section('css')
     <link rel="stylesheet" href="/css/admin_custom.css">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 @stop
 
 @section('js')
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script  src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"  integrity="sha256-xH4q8N0pEzrZMaRmd7gQVcTZiFei+HfRTBPJ1OGXC0k="  crossorigin="anonymous"></script>
+<script  src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
 <script>
 
+    //Função responsável por fazer a exclusão de datas que não possuem agendamento disponível
     function nonWorkingDates(date){
         var day = date.getDay(), Domingo = 0, Segunda = 1, Terça = 2, Quarta = 3, Quinta = 4, Sexta = 5, Sábado = 6;
-        var closedDates = [[12, 31, 2021], [1, 20, 2022]];
-        //var closedDays = [[Domingo], [Sábado]];
-        var closedDays = [ <?php echo $days; ?> ];
+        var closedDates = [ {{$excludeDays }} ];
+        var closedDays = [ {{$days}} ];
         for (var i = 0; i < closedDays.length; i++) {
             if (day == closedDays[i][0]) {
                 return [false];
@@ -132,6 +154,7 @@
         return [true];
     }
     
+    //Tradução e criação do datepicker usando a função de exclusão de datas
     $( function() {
         $('#datepicker').datepicker({
             dateFormat: 'dd/mm/yy',

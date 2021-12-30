@@ -9,7 +9,7 @@
         </div>
         <div class="col">
             <div class="float-right">
-                <a href="{{ route('schedule.create') }}">
+                <a href="{{ route('schedules.create') }}">
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#excludeDate">Agendar consulta</button>
                 </a>
             </div>
@@ -32,6 +32,9 @@
         <div class="col-12">
             <div class="alert alert-danger">
                 <strong>{{session('error')}}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
     @endif

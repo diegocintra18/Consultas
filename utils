@@ -1,0 +1,4 @@
+echo "Horário inicial da consulta: " . $timeObj->lucnhEnd . " - Horário final da consulta: " . date('H:i',$timeObj->scheduleEnd);
+                    echo "<br>";
+                    echo "Horário inicial da consulta: " . date('H:i',$timeObj->nextSchedule) . " - Horário final da consulta: " . date('H:i',$timeObj->nextScheduleEnd);
+                    echo "<br>";

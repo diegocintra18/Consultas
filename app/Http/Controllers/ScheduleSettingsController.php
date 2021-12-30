@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\storeUpdateSettings;
+use App\Models\Available;
 use App\Models\Schedule_disponibility;
 use App\Models\Schedule_settings;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Psy\VarDumper\Dumper;
 use ScheduleDisponibility;
 use SebastianBergmann\CodeCoverage\Driver\Xdebug2Driver;
+use stdClass;
 
 class ScheduleSettingsController extends Controller
 {
@@ -100,6 +102,20 @@ class ScheduleSettingsController extends Controller
             'schedule_saturday'         => $days["saturday"],
             'schedule_settings_id'      => $idSettings["id"]
         ]);
+
+        //Criando um objeto para ser usado em uma função de criar faixas de horário
+        $timeObj = new stdClass();
+
+        $timeObj->dayStart = $data["schedule_day_start"];
+        $timeObj->lunchStart = $data["schedule_lunch_start"];
+        $timeObj->lucnhEnd = $data["schedule_lunch_end"];
+        $timeObj->dayEnd = $data["schedule_day_end"];
+        $timeObj->duration = $data["schedule_duration_limit"];
+        $timeObj->beforeBreak = $data["schedule_before_break"];
+        $timeObj->afterBreak = $data["schedule_after_break"];
+        $timeObj->settings = $idSettings["id"];
+
+        $this->AvailableTimes($timeObj);
 
         return redirect()->route('schedule.index')->with('message', 'As configurações foram salvas com sucesso!');
     }
@@ -193,6 +209,22 @@ class ScheduleSettingsController extends Controller
             'schedule_saturday'         => $days["saturday"],
         ]);
 
+        //Criando um objeto para ser usado em uma função de criar faixas de horário
+        $timeObj = new stdClass();
+
+        $timeObj->dayStart = $data["schedule_day_start"];
+        $timeObj->lunchStart = $data["schedule_lunch_start"];
+        $timeObj->lucnhEnd = $data["schedule_lunch_end"];
+        $timeObj->dayEnd = $data["schedule_day_end"];
+        $timeObj->duration = $data["schedule_duration_limit"];
+        $timeObj->beforeBreak = $data["schedule_before_break"];
+        $timeObj->afterBreak = $data["schedule_after_break"];
+        $timeObj->settings = $data["id"];
+
+        $available = Available::where("schedule_settings_id", $data["id"])->delete();
+
+        $this->AvailableTimes($timeObj);
+
         return redirect()->route('schedule.index')->with('message', 'As configurações foram salvas com sucesso!');
     }
 
@@ -205,6 +237,7 @@ class ScheduleSettingsController extends Controller
     public function destroy($id)
     {
         $disponibility = Schedule_disponibility::where("schedule_settings_id", $id)->delete();
+        $available = Available::where("schedule_settings_id", $id)->delete();
         $settings = Schedule_settings::where("id", $id)->delete();
         
         return redirect()->route('schedule.index')->with('message', 'Configurações excluídas com sucesso!');
@@ -279,6 +312,112 @@ class ScheduleSettingsController extends Controller
         }
 
         return true;
+    }
+
+    public function AvailableTimes(stdClass $timeObj){
+        //Calculando quantas consultas podem ser realizadas em um dia
+        $durationAndBreak = $timeObj->duration + $timeObj->beforeBreak + $timeObj->afterBreak;
+        $timeObj->break = $timeObj->beforeBreak + $timeObj->afterBreak;
+        $disponibilityMorning = strtotime($timeObj->lunchStart) - strtotime($timeObj->dayStart);
+        $disponibilityAfternoon = strtotime($timeObj->dayEnd) - strtotime($timeObj->lucnhEnd);
+        $timeMorning = ($disponibilityMorning/60) / $durationAndBreak;
+        $timeAfternoon = ($disponibilityAfternoon/60) / $durationAndBreak;
+
+        function convertHoras($horasInteiras) {
+
+            // Define o formato de saida
+            $formato = '%02d:%02d';
+            // Converte para minutos
+            $minutos = $horasInteiras;
+
+            // Converte para o formato hora
+            $horas = floor($minutos / 60);
+            $minutos = ($minutos % 60);
+
+            // Retorna o valor
+            return sprintf($formato, $horas, $minutos);
+        }
+
+        function scheduleTimeMorning(stdClass $timeObj, $time, $id){
+            // Este for cria todas as faixas de horário seguindo as regras cadastradas
+            for($i = 0; $i < $time; $i++){
+                
+                if ($i == 0){
+                    $timeObj->scheduleEnd = strtotime($timeObj->dayStart) + strtotime(convertHoras($timeObj->duration));
+                    $timeObj->nextSchedule = $timeObj->scheduleEnd + strtotime(convertHoras($timeObj->break));
+                    $timeObj->nextScheduleEnd = $timeObj->nextSchedule + strtotime(convertHoras($timeObj->duration));
+                    
+                    $available[0]['available_start'] = $timeObj->dayStart;
+                    $available[0]['available_end'] = date('H:i',$timeObj->scheduleEnd);
+                    $available[$i+1]['available_start'] = date('H:i',$timeObj->nextSchedule);
+                    $available[$i+1]['available_end'] = date('H:i',$timeObj->nextScheduleEnd);
+                } else {
+                    $timeObj->nextSchedule = $timeObj->nextScheduleEnd + strtotime(convertHoras($timeObj->break));
+                    $timeObj->nextScheduleEnd = $timeObj->nextSchedule + strtotime(convertHoras($timeObj->duration));
+
+                    $a = date('H:i',$timeObj->nextScheduleEnd);
+                    $b = date('H:i',strtotime($timeObj->lunchStart));
+
+                    if ( $a < $b ) {
+
+                        $available[$i+1]['available_start'] = date('H:i',$timeObj->nextSchedule);
+                        $available[$i+1]['available_end'] = date('H:i',$timeObj->nextScheduleEnd);
+                    }
+                    
+                }
+            }
+            
+            foreach($available as $a){
+                Available::create([
+                    'available_start' => $a['available_start'],
+                    'available_end' => $a['available_end'],
+                    'schedule_settings_id' => $id
+                ]);
+            }
+            
+        }
+
+        function scheduleTimeAfternoon(stdClass $timeObj, $time, $id){
+            // Este for cria todas as faixas de horário seguindo as regras cadastradas
+            for($i = 0; $i < $time; $i++){
+                
+                if ($i == 0){
+                    $timeObj->scheduleEnd = strtotime($timeObj->lucnhEnd) + strtotime(convertHoras($timeObj->duration));
+                    $timeObj->nextSchedule = $timeObj->scheduleEnd + strtotime(convertHoras($timeObj->break));
+                    $timeObj->nextScheduleEnd = $timeObj->nextSchedule + strtotime(convertHoras($timeObj->duration));
+                    
+                    $available[0]['available_start'] = $timeObj->lucnhEnd;
+                    $available[0]['available_end'] = date('H:i',$timeObj->scheduleEnd);
+                    $available[$i+1]['available_start'] = date('H:i',$timeObj->nextSchedule);
+                    $available[$i+1]['available_end'] = date('H:i',$timeObj->nextScheduleEnd);
+
+                } else {
+                    $timeObj->nextSchedule = $timeObj->nextScheduleEnd + strtotime(convertHoras($timeObj->break));
+                    $timeObj->nextScheduleEnd = $timeObj->nextSchedule + strtotime(convertHoras($timeObj->duration));
+
+                    $a = date('H:i',$timeObj->nextScheduleEnd);
+                    $b = date('H:i',strtotime($timeObj->dayEnd));
+
+                    if ( $a < $b ) {
+                        $available[$i+1]['available_start'] = date('H:i',$timeObj->nextSchedule);
+                        $available[$i+1]['available_end'] = date('H:i',$timeObj->nextScheduleEnd);
+                    }
+                    
+                }
+            }
+            
+            foreach($available as $a){
+                Available::create([
+                    'available_start' => $a['available_start'],
+                    'available_end' => $a['available_end'],
+                    'schedule_settings_id' => $id
+                ]);
+            }
+        }
+
+        //Estas chamadas salvam as faixas de horário disponíveis no banco
+        scheduleTimeMorning($timeObj, (integer) $timeMorning, $timeObj->settings);
+        scheduleTimeAfternoon($timeObj, (integer) $timeAfternoon, $timeObj->settings);
     }
 
 }
