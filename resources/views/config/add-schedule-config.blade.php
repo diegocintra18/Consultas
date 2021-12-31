@@ -18,6 +18,7 @@
 @stop
 
 @section('content')
+<div class="bg-white">
     @if(session('message'))
         <div class="col-12">
             <div class="alert alert-success">
@@ -26,7 +27,7 @@
         </div>
     @endif
     @if( isset($schedule_settings))
-        <div class="table-responsive mt-5 text-center bg-light">
+        <div class="table-responsive mt-5 text-center">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -104,6 +105,7 @@
     @else
 
     @endif
+</div>
 @stop
 
 @section('css')

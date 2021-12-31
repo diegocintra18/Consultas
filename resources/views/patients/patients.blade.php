@@ -41,9 +41,9 @@
             <div id="search-container" class="col-6 text-center">
                 <form action="{{ route('patients.index') }}" method="get">
                     @csrf
-                    <label for="searchPatients">Pesquise pelo nome do Paciente</label>
+                    <label for="searchPatients">Pesquise pelo nome ou CPF do Paciente</label>
                     <div class="form-group row">
-                        <input type="text" name="searchPatients" class="col form-control" placeholder="Digite o nome do paciente" id="">
+                        <input type="text" name="searchPatients" class="col form-control" placeholder="Digite o nome ou CPF do paciente" id="">
                         <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Pesquisar</button>
                     </div>
                 </form>

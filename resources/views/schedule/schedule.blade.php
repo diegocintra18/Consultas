@@ -39,33 +39,41 @@
         </div>
     @endif
 
-    @if ( isset($patients) )
-        <div class="container bg-white">
-            <table class="table table-hover">
+    @if ( isset($consult) )
+        <div class="container-fluid bg-white">
+            <table class="table table-hover text-center">
                 <thead>
                 <tr>
                     <th scope="col">Nome</th>
                     <th scope="col">CPF</th>
+                    <th scope="col">Data da consulta</th>
+                    <th scope="col">Horário</th>
                     <th scope="col" class="text-center">Ações</th>
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach ($patients as $p)
+                    @foreach ($consult as $c)
                         <tr>
-                            <td>{{ $p['patient_firstname']}} {{ $p['patient_lastname'] }}</td>
+                            <td>{{ $c['patient_firstname'] }} {{ $c['patient_lastname'] }}</td>
                             <td>
                                 <?php 
-                                    $bloco1 = substr($p['patient_cpf'],0,3);
-                                    $bloco2 = substr($p['patient_cpf'],3,3);
-                                    $bloco3 = substr($p['patient_cpf'],6,3);
-                                    $dig_verificador = substr($p['patient_cpf'],-2);
+                                    $bloco1 = substr($c['patient_cpf'],0,3);
+                                    $bloco2 = substr($c['patient_cpf'],3,3);
+                                    $bloco3 = substr($c['patient_cpf'],6,3);
+                                    $dig_verificador = substr($c['patient_cpf'],-2);
                                     echo $bloco1 . "." . $bloco2 . "." . $bloco3 . "-" . $dig_verificador;
                                 ?>
                             </td>
-                            <td class="text-center">
-                                <a href="{{ route('patients.show', $p['id']) }}"><button type="button" class="btn btn-primary">Editar</button></a>
-                                <button type="button" class="btn btn-warning">Agendar Consulta</button>
-                                <button type="button" onClick="mudarAction({{$p['id']}})" class="btn btn-danger ml-1 mr-1" data-toggle="modal" data-target="#exampleModal" data-whatever="{{$p['id']}}"><i class="fas fa-trash-alt"></i></button>
+                            <td>
+                                <?php 
+                                    $date = strtotime($c['schedules_date']);
+                                    echo date("d/m/Y", $date);
+                                ?>
+                            </td>
+                            <td>{{ $c['available_hour'] }}</td>
+                            <td>
+                                <a href="{{ route('schedules.show', $c['schedule_id']) }}"><button class="btn btn-primary" id="{{$c['schedule_id']}}">Editar</button></a>
+                                <button type="button" onClick="mudarAction({{$c['schedule_id']}})" class="btn btn-danger ml-1 mr-1" data-toggle="modal" data-target="#exampleModal" data-whatever="{{$c['schedule_id']}}"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
                     @endforeach
@@ -79,7 +87,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-body">
-                <h3>Deseja realmente excluir este paciente?</h3>
+                <h3>Deseja realmente excluir esta consulta?</h3>
             </div>
             <div class="modal-footer">
                 <form class="form-teste" id="formulario" action="" method="post">
@@ -102,7 +110,7 @@
 @section('js')
 <script>
     function mudarAction(id){
-        var route = "excluir-paciente/";
+        var route = "excluir-consulta/";
         document.getElementById('formulario').action = route + id;
     }
 </script>

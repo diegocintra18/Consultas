@@ -59,10 +59,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/consultas', [ScheduleController::class, 'index'])->name('schedules.index');
     Route::get('/agendar-consulta/{id?}', [ScheduleController::class, 'create'])->name('schedules.create');
     Route::post('/cadastrar-consulta', [ScheduleController::class, 'store'])->name('schedules.store');
-    Route::get('/teste/{date}', [ScheduleController::class, 'disponibility'])->name('schedules.disponibility');
-    // Route::get('/editar-paciente/{id}', [PatientController::class, 'show'])->name('patients.show');
-    // Route::post('/atualizar-paciente', [PatientController::class, 'update'])->name('patients.update');
-    // Route::delete('/excluir-paciente/{id}', [PatientController::class, 'destroy'])->name('patients.destroy');
+    Route::get('/verificar-disponibilidade/{date}', [ScheduleController::class, 'disponibility'])->name('schedules.disponibility');
+    Route::get('/editar-consulta/{id}', [ScheduleController::class, 'show'])->name('schedules.show');
+    Route::post('/atualizar-consulta', [ScheduleController::class, 'update'])->name('schedules.update');
+    Route::delete('/excluir-consulta/{id}', [ScheduleController::class, 'destroy'])->name('schedules.destroy');
 });  
 
 require __DIR__.'/auth.php';
