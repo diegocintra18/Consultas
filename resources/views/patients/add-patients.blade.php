@@ -164,15 +164,18 @@
                                     <?php 
                                         if ( $patient['patient_gender'] == 0 ) {
                                             echo '<option value="Masculino" selected>Masculino</option>';
+                                            echo '<option>Feminino</option>';
+                                            echo '<option>Não binário</option>';
                                         } elseif ( $patient['patient_gender'] == 1 ) {
                                             echo '<option value="Feminino" selected>Feminino</option>';
+                                            echo '<option>Masculino</option>';
+                                            echo '<option>Não binário</option>';
                                         } else {
                                             echo '<option value="Não binário" selected>Não binário</option>';
+                                            echo '<option>Masculino</option>';
+                                            echo '<option>Feminino</option>';
                                         }
                                     ?>
-                                    <option>Masculino</option>
-                                    <option>Feminino</option>
-                                    <option>Não binário</option>
                                 </select>
                             </div>
                         </div>

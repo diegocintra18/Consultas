@@ -15,8 +15,13 @@ class CreateSchedulesTable extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
+            $table->date('schedules_date');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('patient_id')->constrained('patients');
             $table->timestamps();
         });
+
+        
     }
 
     /**
@@ -27,5 +32,16 @@ class CreateSchedulesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('schedules');
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('user_id')
+            ->onDelete('cascade');
+        });
+
+        Schema::table('patients', function (Blueprint $table) {
+            $table->foreignId('patient_id')
+            ->onDelete('cascade');
+        });
+
     }
 }

@@ -24,4 +24,8 @@ class Patient extends Model
     public function addresses(){
         return $this->belongsToMany(Address::class);
     }
+
+    public function schedules(){
+        return $this->hasMany(Schedule::class);
+    }
 }

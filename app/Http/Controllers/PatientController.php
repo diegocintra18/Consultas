@@ -79,9 +79,9 @@ class PatientController extends Controller
         if ( $data['patient_gender'] == 'Masculino' ) {
             $gender = 0;
         } elseif ( $data['patient_gender'] == 'Feminino' ) {
-            $gender = 2;
+            $gender = 1;
         } else {
-            $gender = 3;
+            $gender = 2;
         }
 
         $patients = Patient::create([
@@ -171,9 +171,9 @@ class PatientController extends Controller
         if ( $data['patient_gender'] == 'Masculino' ) {
             $gender = 0;
         } elseif ( $data['patient_gender'] == 'Feminino' ) {
-            $gender = 2;
+            $gender = 1;
         } else {
-            $gender = 3;
+            $gender = 2;
         }
 
         // Os dados gerais do paciente são atualizados

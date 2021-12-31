@@ -369,8 +369,7 @@ class ScheduleSettingsController extends Controller
             
             foreach($available as $a){
                 Available::create([
-                    'available_start' => $a['available_start'],
-                    'available_end' => $a['available_end'],
+                    'available_hour' => $a['available_start'] . " às " . $a['available_end'],
                     'schedule_settings_id' => $id
                 ]);
             }
@@ -408,8 +407,7 @@ class ScheduleSettingsController extends Controller
             
             foreach($available as $a){
                 Available::create([
-                    'available_start' => $a['available_start'],
-                    'available_end' => $a['available_end'],
+                    'available_hour' => $a['available_start'] . " às " . $a['available_end'],
                     'schedule_settings_id' => $id
                 ]);
             }

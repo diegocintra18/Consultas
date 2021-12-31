@@ -57,8 +57,9 @@ Route::middleware(['auth'])->group(function () {
 //Rotas de Consultas
 Route::middleware(['auth'])->group(function () {
     Route::get('/consultas', [ScheduleController::class, 'index'])->name('schedules.index');
-    Route::get('/agendar-consulta', [ScheduleController::class, 'create'])->name('schedules.create');
-    // Route::post('/cadastrar-paciente', [PatientController::class, 'store'])->name('patients.store');
+    Route::get('/agendar-consulta/{id?}', [ScheduleController::class, 'create'])->name('schedules.create');
+    Route::post('/cadastrar-consulta', [ScheduleController::class, 'store'])->name('schedules.store');
+    Route::get('/teste/{date}', [ScheduleController::class, 'disponibility'])->name('schedules.disponibility');
     // Route::get('/editar-paciente/{id}', [PatientController::class, 'show'])->name('patients.show');
     // Route::post('/atualizar-paciente', [PatientController::class, 'update'])->name('patients.update');
     // Route::delete('/excluir-paciente/{id}', [PatientController::class, 'destroy'])->name('patients.destroy');

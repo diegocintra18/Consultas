@@ -49,4 +49,8 @@ class User extends Authenticatable
     public function schedule_excludes() {
         return $this->belongsTo(Schedule_exclude::class);
     }
+
+    public function schedules() {
+        return $this->belongsTo(Schedule::class);
+    }
 }

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Available;
+use App\Models\Patient;
 use App\Models\Schedule;
 use App\Models\Schedule_exclude;
 use App\Models\Schedule_settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ScheduleController extends Controller
 {
@@ -26,7 +28,7 @@ class ScheduleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id = null)
     {
         $user = Auth::user()->id;
 
@@ -35,6 +37,13 @@ class ScheduleController extends Controller
 
         $data = Schedule_exclude::where('user_id', $user)->select('exclude_date')->get();
         $exclude = json_decode($data, TRUE);
+
+        if($id){
+            $data = Patient::where('id', $id)->get();
+            $patient = json_decode($data, TRUE);
+        } else {
+            $patient = null;
+        }
 
         // echo "<pre>";
         // print_r($disponibility);
@@ -50,7 +59,8 @@ class ScheduleController extends Controller
         return view('schedule.add-schedule', [
             'disponibility' => $disponibility,
             'exclude' => $exclude,
-            'available' => $available
+            'available' => $available,
+            'patient' => $patient
         ]);
     }
 
@@ -62,7 +72,46 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $date = strtotime($data['schedules_date']);
+        $date2 = date('Y-m-d', $date);
+
+        $id = Schedule::create([
+            'schedules_date' => $date2,
+            'user_id' => Auth::user()->id,
+            'patient_id' => $data['idPatient'],
+        ]);
+
+        $idAvailable = Available::where('available_hour', $data['schedule_hour'])->select('id')->get();
+
+        DB::table('schedules_date')->insert([
+            'schedule_id' => $id['id'],
+            'available_id'=> $idAvailable[0]['id'],
+        ]);
+
+        return redirect()->route('schedules.index')->with('message', 'Consulta agendada com sucesso!');
+    }
+
+    public function disponibility($date){
+                
+        $x = Schedule::where('schedules_date', $date)->with('schedule_dates')->get();
+
+        if ($x->count() >= 1){
+            $response['success'] = true;
+            $data = json_decode($x, TRUE);
+        
+            foreach($data as $d => $r){
+                $indisponibility[$d]['time'] = $r['schedule_dates'][0]['available_hour'];
+            }
+
+            $response['data'] = $indisponibility;
+            echo json_encode($response);
+        } else{
+            $response['success'] = false;
+            echo json_encode($response);
+        }
+        
     }
 
     /**

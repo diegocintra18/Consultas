@@ -12,12 +12,15 @@ class Available extends Model
     protected $table = 'availables';
 
     protected $fillable = [
-        'available_start',
-        'available_end',
+        'available_hour',
         'schedule_settings_id',
     ];
 
     public function schedule_settings() {
         return $this->belongsTo(Schedule_settings::class);
+    }
+
+    public function availables(){
+        return $this->belongsToMany(Schedule::class, 'schedules_date', foreignPivotKey: 'available_id', relatedPivotKey: 'schedule_id');
     }
 }

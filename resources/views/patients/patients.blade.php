@@ -79,7 +79,7 @@
                             </td>
                             <td class="text-center">
                                 <a href="{{ route('patients.show', $p['id']) }}"><button type="button" class="btn btn-primary">Editar</button></a>
-                                <button type="button" class="btn btn-warning">Agendar Consulta</button>
+                                <a href="{{ route('schedules.create', $p['id']) }}"><button type="button" class="btn btn-warning">Agendar Consulta</button></a>
                                 <button type="button" onClick="mudarAction({{$p['id']}})" class="btn btn-danger ml-1 mr-1" data-toggle="modal" data-target="#exampleModal" data-whatever="{{$p['id']}}"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
@@ -113,7 +113,7 @@
                             </td>
                             <td class="text-center">
                                 <a href="{{ route('patients.show', $p['id']) }}"><button type="button" class="btn btn-primary">Editar</button></a>
-                                <button type="button" class="btn btn-warning">Agendar Consulta</button>
+                                <a href="{{ route('schedules.create', $p['id']) }}"><button type="button" class="btn btn-warning">Agendar Consulta</button></a>
                                 <button type="button" onClick="mudarAction({{$p['id']}})" class="btn btn-danger ml-1 mr-1" data-toggle="modal" data-target="#exampleModal" data-whatever="{{$p['id']}}"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
